@@ -433,9 +433,13 @@ public final class NavigationHelper {
     public static void openVideoDetailFragment(@NonNull final Context context,
                                                @NonNull final FragmentManager fragmentManager,
                                                @NonNull final OpenVideoDetailData data) {
-        if (ITubeIntegration.getInstance().getCommonRepository()
-                .selectVideoDetailPlayer()) {
-            openVideoDetailOnOriginPlayer(context, fragmentManager,
+        final boolean isOriginPlayer = ITubeIntegration.getInstance().getCommonRepository()
+                .selectVideoDetailPlayer();
+        ITubeUtils.logOnOpenVideoDetail(data, isOriginPlayer);
+        if (isOriginPlayer) {
+            openVideoDetailOnOriginPlayer(
+                    context,
+                    fragmentManager,
                     data);
         } else if (data.getUrl() != null) {
             openVideoDetailOnWebPlayer(context, data.getUrl());
@@ -490,7 +494,7 @@ public final class NavigationHelper {
                         data.getUrl(),
                         data.getTitle(),
                         data.getPlayQueue(),
-                        data.getExternalSource() == VideoDetailFragment.EXTERNAL_SOURCE_ROUTE);
+                        data.getExternalSource() == VideoDetailFragment.EXTERNAL_SOURCE_ROUTER);
             }
             detailFragment.scrollToTop();
         };
