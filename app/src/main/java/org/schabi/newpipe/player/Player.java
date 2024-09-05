@@ -66,6 +66,7 @@ import androidx.preference.PreferenceManager;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player.PositionInfo;
@@ -116,6 +117,7 @@ import org.schabi.newpipe.player.ui.PlayerUiList;
 import org.schabi.newpipe.player.ui.PopupPlayerUi;
 import org.schabi.newpipe.player.ui.VideoPlayerUi;
 import org.schabi.newpipe.util.DependentPreferenceHelper;
+import org.schabi.newpipe.util.ITubeUtils;
 import org.schabi.newpipe.util.ListHelper;
 import org.schabi.newpipe.util.NavigationHelper;
 import org.schabi.newpipe.util.image.PicassoHelper;
@@ -607,6 +609,7 @@ public final class Player implements PlaybackListener, Listener {
         cancelLoadingCurrentThumbnail();
 
         UIs.destroyAll(Object.class); // destroy every UI: obviously every UI extends Object
+        ITubeUtils.logOnCloseVideoDetail();
     }
 
     public void setRecovery() {
@@ -1284,6 +1287,7 @@ public final class Player implements PlaybackListener, Listener {
                                 + "]: " + currentMetadata.getStreamUrl(),
                         currentMetadata.getServiceId());
                 ErrorUtil.createNotification(context, errorInfo);
+                ITubeUtils.reportStreamError(errorInfo, currentMetadata);
             }
 
             currentMetadata.getMaybeStreamInfo().ifPresent(info -> {
@@ -1377,6 +1381,12 @@ public final class Player implements PlaybackListener, Listener {
     @Override
     public void onCues(@NonNull final CueGroup cueGroup) {
         UIs.call(playerUi -> playerUi.onCues(cueGroup.cues));
+    }
+
+    @Override
+    public void onMediaItemTransition(final @Nullable MediaItem mediaItem, final int reason) {
+        Listener.super.onMediaItemTransition(mediaItem, reason);
+        ITubeUtils.playerOnMediaItemTransition(this, mediaItem, reason);
     }
     //endregion
 
@@ -1488,6 +1498,7 @@ public final class Player implements PlaybackListener, Listener {
                     currentMetadata.getServiceId());
         }
         ErrorUtil.createNotification(context, errorInfo);
+        ITubeUtils.reportStreamError(errorInfo, currentMetadata);
     }
     //endregion
 
