@@ -664,7 +664,7 @@ public class RouterActivity extends AppCompatActivity {
                     .fromCallable(() -> NavigationHelper.getIntentByLink(this, currentUrl)
                             .putExtra(
                                     VideoDetailFragment.KEY_EXTERNAL_SOURCE,
-                                    VideoDetailFragment.EXTERNAL_SOURCE_ROUTE))
+                                    VideoDetailFragment.EXTERNAL_SOURCE_ROUTER))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(intent -> {
@@ -1047,7 +1047,7 @@ public class RouterActivity extends AppCompatActivity {
 
                 if (choice.playerChoice.equals(videoPlayerKey)) {
                     NavigationHelper.playOnMainPlayer(this, playQueue,
-                            false, VideoDetailFragment.EXTERNAL_SOURCE_ROUTE);
+                            false, VideoDetailFragment.EXTERNAL_SOURCE_ROUTER);
                 } else if (choice.playerChoice.equals(backgroundPlayerKey)) {
                     NavigationHelper.playOnBackgroundPlayer(this, playQueue,
                             true);
