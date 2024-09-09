@@ -873,5 +873,8 @@
     <string name="trending_podcasts">Trending podcasts</string>
     <string name="trending_movies">Trending movies and shows</string>
     <string name="trending_music">Trending music</string>
-    <string name="version">%s version %s</string>
+    <string name="version">version %s</string>
+    <string name="itube_video_mode">View mode</string>
+    <string name="itube_app_info">App info</string>
+    <string name="itube_contact_support">Contact support</string>
 </resources>
