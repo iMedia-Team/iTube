@@ -289,7 +289,7 @@ public class SearchFragment extends BaseListFragment<SearchInfo, ListExtractor.I
                 searchBinding.searchMetaInfoTextView, searchBinding.searchMetaInfoSeparator,
                 disposables);
 
-        if (TextUtils.isEmpty(searchString) || wasSearchFocused) {
+        if (wasSearchFocused) {
             showKeyboardSearch();
             showSuggestionsPanel();
         } else {
@@ -428,7 +428,8 @@ public class SearchFragment extends BaseListFragment<SearchInfo, ListExtractor.I
         final ActionBar supportActionBar = activity.getSupportActionBar();
         if (supportActionBar != null) {
             supportActionBar.setDisplayShowTitleEnabled(false);
-            supportActionBar.setDisplayHomeAsUpEnabled(true);
+            supportActionBar.setDisplayHomeAsUpEnabled(false);
+            activity.findViewById(R.id.logo_group).setVisibility(View.GONE);
         }
 
         int itemId = 0;
