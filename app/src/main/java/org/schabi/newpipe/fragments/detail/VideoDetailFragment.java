@@ -1300,7 +1300,7 @@ public final class VideoDetailFragment
     private boolean isAutoplayEnabled() {
         return autoPlayEnabled
                 && !isExternalPlayerEnabled()
-                && (!isPlayerAvailable() || player.videoPlayerSelected())
+//                && (!isPlayerAvailable() || player.videoPlayerSelected())
                 && bottomSheetState != BottomSheetBehavior.STATE_HIDDEN
                 && PlayerHelper.isAutoplayAllowedByUser(requireContext());
     }
@@ -1946,8 +1946,7 @@ public final class VideoDetailFragment
     public void onFullscreenStateChanged(final boolean fullscreen) {
         setupBrightness();
         if (!isPlayerAndPlayerServiceAvailable()
-                || player.UIs().get(MainPlayerUi.class).isEmpty()
-                || getRoot().map(View::getParent).isEmpty()) {
+                || player.UIs().get(MainPlayerUi.class).isEmpty()) {
             return;
         }
 
