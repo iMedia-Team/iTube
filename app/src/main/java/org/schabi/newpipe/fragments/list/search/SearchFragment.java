@@ -222,13 +222,6 @@ public class SearchFragment extends BaseListFragment<SearchInfo, ListExtractor.I
         super.onViewCreated(rootView, savedInstanceState);
 
         updateService();
-        // Add the service name to search string hint
-        // to make it more obvious which platform is being searched.
-        if (service != null) {
-            searchEditText.setHint(
-                    getString(R.string.search_with_service_name,
-                            service.getServiceInfo().getName()));
-        }
         showSearchOnStart();
         initSearchListeners();
     }
@@ -299,7 +292,7 @@ public class SearchFragment extends BaseListFragment<SearchInfo, ListExtractor.I
                 searchBinding.searchMetaInfoTextView, searchBinding.searchMetaInfoSeparator,
                 disposables);
 
-        if (TextUtils.isEmpty(searchString) || wasSearchFocused) {
+        if (wasSearchFocused) {
             showKeyboardSearch();
             showSuggestionsPanel();
         } else {
@@ -438,7 +431,8 @@ public class SearchFragment extends BaseListFragment<SearchInfo, ListExtractor.I
         final ActionBar supportActionBar = activity.getSupportActionBar();
         if (supportActionBar != null) {
             supportActionBar.setDisplayShowTitleEnabled(false);
-            supportActionBar.setDisplayHomeAsUpEnabled(true);
+            supportActionBar.setDisplayHomeAsUpEnabled(false);
+            activity.findViewById(R.id.logo_group).setVisibility(View.GONE);
         }
 
         int itemId = 0;
