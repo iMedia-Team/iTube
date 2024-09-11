@@ -4,6 +4,7 @@ import com.android.tools.profgen.DexFile
 
 plugins {
     id "com.android.application"
+    id 'com.google.gms.google-services'
     id "kotlin-android"
     id "kotlin-kapt"
     id "kotlin-parcelize"
@@ -16,12 +17,12 @@ android {
     namespace 'org.schabi.newpipe'
 
     defaultConfig {
-        applicationId "org.schabi.newpipe"
-        resValue "string", "app_name", "NewPipe"
+        applicationId "com.kt.apps.video"
+        resValue "string", "app_name", "iTube"
         minSdk 21
         targetSdk 33
-        versionCode 999
-        versionName "0.27.2"
+        versionCode 24080101
+        versionName "24.08.01.01"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -41,20 +42,18 @@ android {
             def normalizedWorkingBranch = workingBranch.replaceFirst("^[^A-Za-z]+", "").replaceAll("[^0-9A-Za-z]+", "")
             if (normalizedWorkingBranch.isEmpty() || workingBranch == "master" || workingBranch == "dev") {
                 // default values when branch name could not be determined or is master or dev
-                applicationIdSuffix ".debug"
-                resValue "string", "app_name", "NewPipe Debug"
+                resValue "string", "app_name", "iTube"
             } else {
-                applicationIdSuffix ".debug." + normalizedWorkingBranch
-                resValue "string", "app_name", "NewPipe " + workingBranch
-                archivesBaseName = 'NewPipe_' + normalizedWorkingBranch
+                resValue "string", "app_name", "iTube"
+                archivesBaseName = 'iTube_' + normalizedWorkingBranch
             }
         }
 
         release {
             if (System.properties.containsKey('packageSuffix')) {
                 applicationIdSuffix System.getProperty('packageSuffix')
-                resValue "string", "app_name", "NewPipe " + System.getProperty('packageSuffix')
-                archivesBaseName = 'NewPipe_' + System.getProperty('packageSuffix')
+                resValue "string", "app_name", "iTube " + System.getProperty('packageSuffix')
+                archivesBaseName = 'iTube_' + System.getProperty('packageSuffix')
             }
             minifyEnabled true
             shrinkResources false // disabled to fix F-Droid's reproducible build
@@ -71,6 +70,11 @@ android {
         // suppress false warning ("Resource IDs will be non-final in Android Gradle Plugin version
         // 5.0, avoid using them in switch case statements"), which affects only library projects
         disable 'NonConstantResourceId'
+    }
+
+    lintOptions {
+        disable 'TimberArgCount', 'TimberArgTypes', 'TimberTagLength', 'BinaryOperationInTimber',
+                'LogNotTimber', 'StringFormatInTimber', 'ThrowableNotAtBeginning'
     }
 
     compileOptions {
@@ -141,6 +145,8 @@ tasks.register('runCheckstyle', Checkstyle) {
     exclude '**/R.java'
     exclude '**/BuildConfig.java'
     exclude 'main/java/us/shandian/giga/**'
+    exclude 'main/java/com/kt/apps/video/data/api/DownloadService.kt'
+    exclude 'main/java/com/kt/apps/video/utils/HashUtils.java'
 
     classpath = configurations.checkstyle
 
@@ -180,15 +186,14 @@ afterEvaluate {
     preDebugBuild.dependsOn runCheckstyle, runKtlint
 }
 
-sonar {
-    properties {
-        property "sonar.projectKey", "TeamNewPipe_NewPipe"
-        property "sonar.organization", "teamnewpipe"
-        property "sonar.host.url", "https://sonarcloud.io"
-    }
-}
-
 dependencies {
+    /* iTube */
+    implementation platform('com.google.firebase:firebase-bom:33.1.2')
+    implementation 'com.google.firebase:firebase-config-ktx'
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation "androidx.datastore:datastore-preferences:1.1.1"
+    implementation "ai.zalo.kiki.youtubeplayer:core:12.2.0-SNAPSHOT"
+    implementation "com.jakewharton.timber:timber:5.0.1"
 /** Desugaring **/
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs_nio:2.0.4'
 
