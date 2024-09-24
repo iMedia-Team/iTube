@@ -28,8 +28,8 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.utils.isYouTu
 import kotlinx.coroutines.launch
 import org.schabi.newpipe.BuildConfig
 import org.schabi.newpipe.databinding.LayoutWebPlayerBinding
-import org.schabi.newpipe.player.helper.PlayerHelper
 import org.schabi.newpipe.fragments.detail.VideoDetailFragment
+import org.schabi.newpipe.player.helper.PlayerHelper
 import org.schabi.newpipe.util.logOnOpenVideoDetail
 import org.schabi.newpipe.util.reportStreamError
 import timber.log.Timber
