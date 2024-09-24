@@ -68,6 +68,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationBarView;
 import com.kt.apps.video.ITubeIntegration;
 import com.kt.apps.video.data.OpenVideoDetailData;
+import com.kt.apps.video.ui.ITubeAboutFragment;
 import com.kt.apps.video.viewmodel.ITubeAppViewModel;
 
 import org.schabi.newpipe.databinding.ActivityMainBinding;
@@ -827,6 +828,16 @@ public class MainActivity extends AppCompatActivity {
             toolbarLayoutBinding.toolbar.setNavigationOnClickListener(v -> onHomeButtonPressed());
         }
         final NavigationBarView navigationBarView = (NavigationBarView) mainBinding.navigationView;
+        navigationBarView.setOnItemSelectedListener(null);
+
+        if (fragment instanceof MainFragment) {
+            navigationBarView.setSelectedItemId(R.id.home);
+        } else if (fragment instanceof SearchFragment) {
+            navigationBarView.setSelectedItemId(R.id.search);
+        } else if (fragment instanceof ITubeAboutFragment) {
+            navigationBarView.setSelectedItemId(R.id.setting);
+        }
+
         navigationBarView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.home:
