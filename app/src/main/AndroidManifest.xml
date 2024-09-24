@@ -183,6 +183,8 @@
                 <data android:pathPrefix="/@" />
                 <!-- playlist prefix -->
                 <data android:pathPrefix="/playlist" />
+                <!-- search prefix -->
+                <data android:pathPrefix="/results" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
