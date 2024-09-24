@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -43,6 +44,7 @@ import androidx.preference.PreferenceManager;
 
 import com.evernote.android.state.State;
 import com.livefront.bridge.Bridge;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.utils.YoutubeUriExtKt;
 
 import org.schabi.newpipe.database.stream.model.StreamEntity;
 import org.schabi.newpipe.databinding.ListRadioIconItemBinding;
@@ -178,6 +180,17 @@ public class RouterActivity extends AppCompatActivity {
         fm.registerFragmentLifecycleCallbacks(dismissListener, false);
 
         if (TextUtils.isEmpty(currentUrl)) {
+            final Intent intent = getIntent();
+            if (intent != null) {
+                final Uri uri = intent.getData();
+                if (uri != null && YoutubeUriExtKt.isYouTubeSearch(uri)) {
+                    final String searchQuery = YoutubeUriExtKt.getSearchQuery(uri);
+                    handleText(searchQuery, 0);
+                    finish();
+                    return;
+                }
+            }
+
             currentUrl = getUrl(getIntent());
 
             if (TextUtils.isEmpty(currentUrl)) {
@@ -619,6 +632,10 @@ public class RouterActivity extends AppCompatActivity {
     private void handleText() {
         final String searchString = getIntent().getStringExtra(Intent.EXTRA_TEXT);
         final int serviceId = getIntent().getIntExtra(Constants.KEY_SERVICE_ID, 0);
+        handleText(searchString, serviceId);
+    }
+
+    private void handleText(final String searchString, final int serviceId) {
         final Intent intent = new Intent(getThemeWrapperContext(), MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
