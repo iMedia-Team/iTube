@@ -1027,11 +1027,4 @@ public class MainActivity extends AppCompatActivity {
         return sheetState == BottomSheetBehavior.STATE_HIDDEN
                 || sheetState == BottomSheetBehavior.STATE_COLLAPSED;
     }
-
-    public void onCreateHomeOptions() {
-        final NavigationBarView navigationBarView = (NavigationBarView) mainBinding.navigationView;
-        if (navigationBarView.getSelectedItemId() != R.id.home) {
-            navigationBarView.setSelectedItemId(R.id.home);
-        }
-    }
 }
