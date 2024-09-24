@@ -34,7 +34,6 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 
 import org.schabi.newpipe.BaseFragment;
-import org.schabi.newpipe.MainActivity;
 import org.schabi.newpipe.R;
 import org.schabi.newpipe.databinding.FragmentMainBinding;
 import org.schabi.newpipe.error.ErrorUtil;
@@ -163,9 +162,6 @@ public class MainFragment extends BaseFragment implements TabLayout.OnTabSelecte
         final ActionBar supportActionBar = activity.getSupportActionBar();
         if (supportActionBar != null) {
             supportActionBar.setDisplayHomeAsUpEnabled(false);
-        }
-        if (activity instanceof MainActivity) {
-            ((MainActivity) activity).onCreateHomeOptions();
         }
     }
 
