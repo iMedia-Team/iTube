@@ -165,6 +165,7 @@ class MainPlayerGestureListener(
         distanceX: Float,
         distanceY: Float
     ): Boolean {
+        return false
         if (initialEvent == null || !playerUi.isFullscreen) {
             return false
         }

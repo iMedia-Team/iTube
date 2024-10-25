@@ -497,7 +497,10 @@ public final class NavigationHelper {
                         data.getUrl(),
                         data.getTitle(),
                         data.getPlayQueue(),
-                        data.getExternalSource() == VideoDetailFragment.EXTERNAL_SOURCE_ROUTER);
+                        false
+                        /* PREV: data.getExternalSource()
+                        == VideoDetailFragment.EXTERNAL_SOURCE_ROUTER
+                                && DeviceUtils.isTablet(context)*/);
             }
             detailFragment.scrollToTop();
         };

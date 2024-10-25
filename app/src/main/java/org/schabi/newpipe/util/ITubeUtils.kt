@@ -2,10 +2,14 @@
 
 package org.schabi.newpipe.util
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Rect
+import android.graphics.RectF
 import android.graphics.drawable.PaintDrawable
 import android.net.Uri
 import android.os.Build
@@ -16,6 +20,7 @@ import android.webkit.WebView
 import androidx.activity.ComponentActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
@@ -28,6 +33,7 @@ import com.kt.apps.video.data.OpenVideoDetailData
 import com.kt.apps.video.data.StreamSourceArea
 import com.kt.apps.video.data.logger
 import com.kt.apps.video.domain.CheckNewVersion
+import com.kt.apps.video.ui.drawing.BoundDrawable
 import com.kt.apps.video.ui.popup.showDialogUpdateRequired
 import com.kt.apps.video.viewmodel.ITubeAppViewModel
 import com.kt.apps.video.viewmodel.data.Event
@@ -300,5 +306,66 @@ fun org.schabi.newpipe.player.Player.playerOnMediaItemTransition(mediaItem: Medi
                 true
             )
         }
+    }
+}
+
+@SuppressLint("WrongConstant")
+fun MainActivity.testEdgeToEdge() {
+    if (true) {
+        return
+    }
+    val contentView = findViewById<ViewGroup>(android.R.id.content)
+    val spacing = (200 * resources.displayMetrics.density).toInt()
+    ViewCompat.setOnApplyWindowInsetsListener(contentView) { v, windowInsets ->
+        val output = WindowInsetsCompat.Builder(windowInsets)
+            .setInsets(1, Insets.of(0, spacing, 0, 0))
+            .setInsets(2, Insets.of(spacing, 0, spacing, spacing))
+            .build()
+        ViewCompat.onApplyWindowInsets(v, output)
+    }
+    val drawable = object : BoundDrawable() {
+        private val boundsF = RectF()
+        override fun onBoundsChange(bounds: Rect) {
+            super.onBoundsChange(bounds)
+            boundsF.set(0f, 0f, bounds.width().toFloat(), bounds.height().toFloat())
+        }
+        override fun draw(canvas: Canvas) {
+            super.draw(canvas)
+            paint.color = 0x60007AFF
+            paint.style = Paint.Style.FILL
+            canvas.drawRect(boundsF.left, boundsF.top, boundsF.right, boundsF.top + spacing.toFloat(), paint)
+            canvas.drawRect(boundsF.left, boundsF.bottom - spacing, boundsF.right, boundsF.bottom, paint)
+            canvas.drawRect(boundsF.left, boundsF.top + spacing.toFloat(), boundsF.left + spacing.toFloat(), boundsF.bottom - spacing.toFloat(), paint)
+            canvas.drawRect(boundsF.right - spacing.toFloat(), boundsF.top + spacing.toFloat(), boundsF.right, boundsF.bottom - spacing.toFloat(), paint)
+        }
+    }
+    contentView.addOnLayoutChangeListener { _, left, top, right, bottom, _, _, _, _ ->
+        drawable.setBounds(left, top, right, bottom)
+    }
+    contentView.overlay.add(drawable)
+}
+
+@Suppress("DEPRECATION")
+fun MainActivity.setUpTheme() {
+    // Need transparent status bar to background image to work
+//    this.testEdgeToEdge()
+//    this.enableEdgeToEdge(SystemBarStyle.dark(0), SystemBarStyle.dark(-0x56000000))
+    window?.apply {
+        statusBarColor = Color.TRANSPARENT
+        navigationBarColor = Color.BLACK
+        var systemUiFlags = (decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LAYOUT_STABLE)
+
+        // draw or not draw behind the status bar
+        systemUiFlags = systemUiFlags or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN and View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION.inv()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            systemUiFlags = systemUiFlags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            systemUiFlags = systemUiFlags and View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR.inv()
+        }
+
+        decorView.systemUiVisibility = systemUiFlags
     }
 }

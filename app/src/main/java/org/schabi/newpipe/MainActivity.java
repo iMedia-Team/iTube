@@ -43,8 +43,6 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.Spinner;
 
-import androidx.activity.EdgeToEdge;
-import androidx.activity.SystemBarStyle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -63,7 +61,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationBarView;
 import com.kt.apps.video.ITubeIntegration;
@@ -153,8 +150,7 @@ public class MainActivity extends AppCompatActivity {
         ITubeUtils.fixWebViewResettingNightMode(this);
         ThemeHelper.setDayNightMode(this);
         ThemeHelper.setTheme(this, ServiceHelper.getSelectedServiceId(this));
-        // Need transparent status bar to background image to work
-        EdgeToEdge.enable(this, SystemBarStyle.dark(0), SystemBarStyle.dark(0xAA000000));
+        ITubeUtils.setUpTheme(this);
 
         assureCorrectAppLanguage(this);
         super.onCreate(savedInstanceState);
@@ -233,14 +229,21 @@ public class MainActivity extends AppCompatActivity {
         ITubeUtils.collect(this,
                 iTubeAppViewModel.getVideoDetailOverlaySlideOffset(),
                 offset -> {
-                    if (mainBinding.navigationView instanceof BottomNavigationView) {
-                        final float value = mainBinding.navigationView.getHeight() * offset;
-                        mainBinding.navigationView.setTranslationY(value);
+                    if (mainBinding.navigationViewParent != null) {
+                        mainBinding.navigationViewParent.setVisibility(
+                                offset == 1 ? View.GONE : View.VISIBLE
+                        );
+                        ViewKt.doOnLayout(mainBinding.navigationViewParent, view -> {
+                            final float value =
+                                    mainBinding.navigationViewParent.getHeight() * offset;
+                                mainBinding.navigationViewParent.setTranslationY(value);
+                            return null;
+                        });
                     }
                     return null;
                 });
-        if (mainBinding.navigationView instanceof BottomNavigationView) {
-            mainBinding.navigationView.addOnLayoutChangeListener(
+        if (mainBinding.navigationViewParent != null) {
+            mainBinding.navigationViewParent.addOnLayoutChangeListener(
                     (v, left, top, right, bottom,
                      oldLeft, oldTop, oldRight, oldBottom) -> {
                 if (iTubeAppViewModel != null) {

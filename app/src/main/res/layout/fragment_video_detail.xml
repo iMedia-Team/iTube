@@ -592,6 +592,7 @@
             android:layout_gravity="bottom|center"
             app:elevation="16dp"
             app:tabBackground="?attr/windowBackground"
+            android:background="@android:color/transparent"
             app:tabGravity="fill"
             app:tabIconTint="?attr/colorAccent"
             app:tabIndicatorGravity="top" />

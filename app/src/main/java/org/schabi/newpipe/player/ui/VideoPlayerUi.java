@@ -27,7 +27,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -139,7 +138,7 @@ public abstract class VideoPlayerUi extends PlayerUi implements SeekBar.OnSeekBa
     // Gestures
     //////////////////////////////////////////////////////////////////////////*/
 
-    private GestureDetector gestureDetector;
+    private ConfigurableGestureDetector gestureDetector;
     private BasePlayerGestureListener playerGestureListener;
     @Nullable
     private View.OnLayoutChangeListener onLayoutChangeListener = null;
@@ -210,7 +209,16 @@ public abstract class VideoPlayerUi extends PlayerUi implements SeekBar.OnSeekBa
         binding.playbackLiveSync.setOnClickListener(makeOnClickListener(player::seekToDefault));
 
         playerGestureListener = buildGestureListener();
-        gestureDetector = new GestureDetector(context, playerGestureListener);
+        final ConfigurableGestureDetector.ViewConfiguration viewConfiguration =
+                new ConfigurableGestureDetector.ViewConfiguration(context) {
+            @Override
+            public int getScaledTouchSlop() {
+                return 3 * super.getScaledTouchSlop();
+            }
+        };
+        gestureDetector = new ConfigurableGestureDetector(context,
+                playerGestureListener, viewConfiguration);
+        gestureDetector.setLongpressEnabled(false);
         binding.getRoot().setOnTouchListener(playerGestureListener);
 
         binding.repeatButton.setOnClickListener(v -> onRepeatClicked());
@@ -1616,7 +1624,7 @@ public abstract class VideoPlayerUi extends PlayerUi implements SeekBar.OnSeekBa
         return binding;
     }
 
-    public GestureDetector getGestureDetector() {
+    public ConfigurableGestureDetector getGestureDetector() {
         return gestureDetector;
     }
     //endregion
