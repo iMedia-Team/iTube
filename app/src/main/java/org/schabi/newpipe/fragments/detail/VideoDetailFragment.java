@@ -52,8 +52,6 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.WindowCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
@@ -337,8 +335,8 @@ public final class VideoDetailFragment
         showComments = prefs.getBoolean(getString(R.string.show_comments_key), true);
         showRelatedItems = prefs.getBoolean(getString(R.string.show_next_video_key), true);
         showDescription = prefs.getBoolean(getString(R.string.show_description_key), true);
-        selectedTabTag = prefs.getString(
-                getString(R.string.stream_info_selected_tab_key), COMMENTS_TAB_TAG);
+        selectedTabTag = RELATED_TAB_TAG;
+        //prefs.getString(getString(R.string.stream_info_selected_tab_key), RELATED_TAB_TAG);
         prefs.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
 
         setupBroadcastReceiver();
@@ -930,18 +928,18 @@ public final class VideoDetailFragment
         tabIcons.clear();
         tabContentDescriptions.clear();
 
-        if (shouldShowComments()) {
-            pageAdapter.addFragment(
-                    CommentsFragment.getInstance(serviceId, url, title), COMMENTS_TAB_TAG);
-            tabIcons.add(R.drawable.ic_comment);
-            tabContentDescriptions.add(R.string.comments_tab_description);
-        }
-
         if (showRelatedItems && binding.relatedItemsLayout == null) {
             // temp empty fragment. will be updated in handleResult
             pageAdapter.addFragment(EmptyFragment.newInstance(false), RELATED_TAB_TAG);
             tabIcons.add(R.drawable.ic_art_track);
             tabContentDescriptions.add(R.string.related_items_tab_description);
+        }
+
+        if (shouldShowComments()) {
+            pageAdapter.addFragment(
+                    CommentsFragment.getInstance(serviceId, url, title), COMMENTS_TAB_TAG);
+            tabIcons.add(R.drawable.ic_comment);
+            tabContentDescriptions.add(R.string.comments_tab_description);
         }
 
         if (showDescription) {
@@ -1946,10 +1944,10 @@ public final class VideoDetailFragment
         // from landscape to portrait every time.
         // Just turn on fullscreen mode in landscape orientation
         // or portrait & unlocked global orientation
+        player.UIs().get(MainPlayerUi.class).ifPresent(MainPlayerUi::toggleFullscreen);
         final boolean isLandscape = DeviceUtils.isLandscape(requireContext());
         if (DeviceUtils.isTablet(activity)
                 && (!globalScreenOrientationLocked(activity) || isLandscape)) {
-            player.UIs().get(MainPlayerUi.class).ifPresent(MainPlayerUi::toggleFullscreen);
             return;
         }
 
@@ -1998,10 +1996,12 @@ public final class VideoDetailFragment
             activity.getWindow().getAttributes().layoutInDisplayCutoutMode =
                     WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT;
         }
-//        activity.getWindow().getDecorView().setSystemUiVisibility(0);
-//        activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        WindowCompat.getInsetsController(activity.getWindow(),
-                activity.getWindow().getDecorView()).show(WindowInsetsCompat.Type.systemBars());
+        int flags = activity.getWindow().getDecorView().getSystemUiVisibility();
+        flags = flags & ~View.SYSTEM_UI_FLAG_FULLSCREEN
+                & ~View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                & ~View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
+        activity.getWindow().getDecorView().setSystemUiVisibility(flags);
+        activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     private void hideSystemUi() {

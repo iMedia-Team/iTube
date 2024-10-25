@@ -27,6 +27,7 @@
             app:behavior_peekHeight="0dp"
             app:layout_behavior="org.schabi.newpipe.player.gesture.CustomBottomSheetBehavior" />
         <FrameLayout
+            android:id="@+id/navigation_view_parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?android:attr/windowBackground"
@@ -35,15 +36,20 @@
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/navigation_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="64dp"
             app:menu="@menu/bottom_navigation"
+            android:layout_gravity="bottom"
             app:labelVisibilityMode="labeled"
             android:background="@android:color/transparent"
             app:itemActiveIndicatorStyle="@style/BottomNavigationActiveIndicator"
-            app:elevation="16dp"
             app:itemTextColor="@color/white"
             app:itemIconTint="@color/white"
             />
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#AA555555"/>
         </FrameLayout>
     </org.schabi.newpipe.views.FocusAwareCoordinator>
 

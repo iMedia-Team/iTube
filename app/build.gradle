@@ -21,8 +21,8 @@ android {
         resValue "string", "app_name", "iTube"
         minSdk 21
         targetSdk 33
-        versionCode 24090101
-        versionName "24.09.01.01"
+        versionCode 24100201
+        versionName "24.10.02.01"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
