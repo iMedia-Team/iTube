@@ -816,4 +816,8 @@
     <string name="itube_video_mode">Chế độ xem</string>
     <string name="itube_app_info">Thông tin ứng dụng</string>
     <string name="itube_contact_support">Liên hệ hỗ trợ</string>
+    <string name="itube_play_mode">Chế độ phát</string>
+    <string name="itube_play_mode_title">Chế độ phát mặc định</string>
+    <string name="itube_play_mode_description_windowing">Cửa sổ</string>
+    <string name="itube_play_mode_description_fullscreen">Toàn màn hình</string>
 </resources>

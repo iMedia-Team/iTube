@@ -1471,4 +1471,17 @@
         <item>@string/image_quality_medium_key</item>
         <item>@string/image_quality_high_key</item>
     </string-array>
+
+    <string name="itube_play_mode_key">itube_play_mode_key</string>
+    <string name="itube_play_mode_value">@string/itube_play_mode_windowing_key</string>
+    <string name="itube_play_mode_windowing_key">itube_play_mode_windowing_key</string>
+    <string name="itube_play_mode_fullscreen_key">itube_play_mode_fullscreen_key</string>
+    <string-array name="itube_play_mode_action_key">
+        <item>@string/itube_play_mode_windowing_key</item>
+        <item>@string/itube_play_mode_fullscreen_key</item>
+    </string-array>
+    <string-array name="itube_play_mode_action_description">
+        <item>@string/itube_play_mode_description_windowing</item>
+        <item>@string/itube_play_mode_description_fullscreen</item>
+    </string-array>
 </resources>

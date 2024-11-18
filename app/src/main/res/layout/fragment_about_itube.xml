@@ -24,6 +24,38 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
+        <LinearLayout
+            android:id="@+id/playModeSection"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/videoModeSectionTextView"
+            android:background="@drawable/background_itube_card"
+            android:padding="16dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/playModeTitleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/itube_play_mode_title"
+                android:textSize="20sp"
+                android:textColor="?colorAccent"
+                android:fontFamily="sans-serif-medium" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/playModeDetailTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/itube_play_mode_description_windowing"
+                android:textColor="?colorAccent"
+                android:alpha="0.6"
+                android:textSize="14sp"/>
+        </LinearLayout>
+
         <LinearLayout
             android:id="@+id/minimize_on_exit_view"
             android:layout_width="0dp"
@@ -32,7 +64,7 @@
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/videoModeSectionTextView"
+            app:layout_constraintTop_toBottomOf="@id/playModeSection"
             android:background="@drawable/background_itube_card"
             android:padding="16dp">
 
@@ -49,7 +81,7 @@
                 android:id="@+id/minimize_on_exit_sub_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/minimize_on_exit_summary"
+                android:text="@string/minimize_on_exit_background_description"
                 android:textColor="?colorAccent"
                 android:alpha="0.6"
                 android:textSize="14sp"/>
@@ -68,28 +100,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/minimize_on_exit_view" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/qrCodeZalo"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toStartOf="@id/qrCodeFb"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/contactSectionTextView"
-            android:layout_marginTop="24dp"
-            app:srcCompat="@drawable/qr_code_imedia_zalo" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/qrCodeFb"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/qrCodeZalo"
-            app:layout_constraintTop_toTopOf="@id/qrCodeZalo"
-            android:layout_marginStart="48dp"
-            app:srcCompat="@drawable/qr_code_imedia_fb"/>
+        <include layout="@layout/layout_about_contact_support"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/appInfoSectionTextView"

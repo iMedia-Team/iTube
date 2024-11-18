@@ -6,6 +6,8 @@ import static com.google.android.exoplayer2.Player.REPEAT_MODE_ONE;
 import static org.schabi.newpipe.player.helper.PlayerHelper.AutoplayType.AUTOPLAY_TYPE_ALWAYS;
 import static org.schabi.newpipe.player.helper.PlayerHelper.AutoplayType.AUTOPLAY_TYPE_NEVER;
 import static org.schabi.newpipe.player.helper.PlayerHelper.AutoplayType.AUTOPLAY_TYPE_WIFI;
+import static org.schabi.newpipe.player.helper.PlayerHelper.DefaultPlayMode.WINDOWING;
+import static org.schabi.newpipe.player.helper.PlayerHelper.DefaultPlayMode.FULLSCREEN;
 import static org.schabi.newpipe.player.helper.PlayerHelper.MinimizeMode.MINIMIZE_ON_EXIT_MODE_BACKGROUND;
 import static org.schabi.newpipe.player.helper.PlayerHelper.MinimizeMode.MINIMIZE_ON_EXIT_MODE_NONE;
 import static org.schabi.newpipe.player.helper.PlayerHelper.MinimizeMode.MINIMIZE_ON_EXIT_MODE_POPUP;
@@ -84,6 +86,13 @@ public final class PlayerHelper {
         int MINIMIZE_ON_EXIT_MODE_NONE = 0;
         int MINIMIZE_ON_EXIT_MODE_BACKGROUND = 1;
         int MINIMIZE_ON_EXIT_MODE_POPUP = 2;
+    }
+
+    @Retention(SOURCE)
+    @IntDef({WINDOWING, FULLSCREEN})
+    public @interface DefaultPlayMode {
+        int WINDOWING = 0;
+        int FULLSCREEN = 1;
     }
 
     private PlayerHelper() {
@@ -265,6 +274,19 @@ public final class PlayerHelper {
             return MINIMIZE_ON_EXIT_MODE_NONE;
         } else {
             return MINIMIZE_ON_EXIT_MODE_BACKGROUND; // default
+        }
+    }
+
+    @DefaultPlayMode
+    public static int getDefaultPlayMode(@NonNull final Context context) {
+        final String action = getPreferences(context)
+                .getString(context.getString(R.string.itube_play_mode_key), "");
+        if (action.equals(context.getString(R.string.itube_play_mode_windowing_key))) {
+            return WINDOWING;
+        } else if (action.equals(context.getString(R.string.itube_play_mode_fullscreen_key))) {
+            return FULLSCREEN;
+        } else {
+            return WINDOWING; // default
         }
     }
 

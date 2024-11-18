@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/qrCodeZalo"
+            android:layout_width="168dp"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toStartOf="@id/qrCodeFb"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/contactSectionTextView"
+            android:layout_marginTop="24dp"
+            app:srcCompat="@drawable/qr_code_imedia_zalo" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/qrCodeFb"
+            android:layout_width="168dp"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintStart_toEndOf="@id/qrCodeZalo"
+            app:layout_constraintTop_toTopOf="@id/qrCodeZalo"
+            android:layout_marginStart="48dp"
+            app:srcCompat="@drawable/qr_code_imedia_fb"/>
+</merge>

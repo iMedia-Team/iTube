@@ -863,4 +863,8 @@
     <string name="itube_video_mode">View mode</string>
     <string name="itube_app_info">App info</string>
     <string name="itube_contact_support">Contact support</string>
+    <string name="itube_play_mode">Play mode</string>
+    <string name="itube_play_mode_title">Default play video mode</string>
+    <string name="itube_play_mode_description_windowing">Windowing</string>
+    <string name="itube_play_mode_description_fullscreen">Fullscreen</string>
 </resources>
