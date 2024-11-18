@@ -498,7 +498,8 @@ public final class NavigationHelper {
                         data.getUrl(),
                         data.getTitle(),
                         data.getPlayQueue(),
-                        false
+                        PlayerHelper.getDefaultPlayMode(context)
+                                == PlayerHelper.DefaultPlayMode.FULLSCREEN
                         /* PREV: data.getExternalSource()
                         == VideoDetailFragment.EXTERNAL_SOURCE_ROUTER
                                 && DeviceUtils.isTablet(context)*/);

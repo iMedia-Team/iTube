@@ -27,6 +27,7 @@ class ITubeAboutFragment : Fragment(R.layout.fragment_about_itube), DialogPrefer
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        initPreferences()
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,7 +37,14 @@ class ITubeAboutFragment : Fragment(R.layout.fragment_about_itube), DialogPrefer
             getString(R.string.version),
             BuildConfig.VERSION_NAME
         )
-        updateNewPreference()
+        updateNewPreference(
+            getString(R.string.minimize_on_exit_key),
+            sharedPreferences.getString(getString(R.string.minimize_on_exit_key), getString(R.string.minimize_on_exit_value))
+        )
+        updateNewPreference(
+            getString(R.string.itube_play_mode_key),
+            sharedPreferences.getString(getString(R.string.itube_play_mode_key), getString(R.string.itube_play_mode_value))
+        )
         binding.minimizeOnExitView.setOnClickListener {
             val bundle = bundleOf(
                 "key" to getString(R.string.minimize_on_exit_key)
@@ -45,6 +53,15 @@ class ITubeAboutFragment : Fragment(R.layout.fragment_about_itube), DialogPrefer
             fragment.setTargetFragment(this, 1012)
             fragment.arguments = bundle
             fragment.show(parentFragmentManager, "minimize_on_exit")
+        }
+        binding.playModeSection?.setOnClickListener {
+            val bundle = bundleOf(
+                "key" to getString(R.string.itube_play_mode_key)
+            )
+            val fragment = ListPreferenceDialogFragmentCompat()
+            fragment.setTargetFragment(this, 1012)
+            fragment.arguments = bundle
+            fragment.show(parentFragmentManager, "itube_play_mode")
         }
     }
 
@@ -59,50 +76,102 @@ class ITubeAboutFragment : Fragment(R.layout.fragment_about_itube), DialogPrefer
         }
     }
 
-    private fun updateNewPreference(newValue: String? = sharedPreferences.getString(getString(R.string.minimize_on_exit_key), getString(R.string.minimize_on_exit_value))) {
-        val value = run {
-            val index = resources.getStringArray(R.array.minimize_on_exit_action_key).indexOfFirst {
-                it == newValue
+    private fun updateNewPreference(
+        key: String,
+        newValue: String?
+    ) {
+        when (key) {
+            getString(R.string.minimize_on_exit_key) -> {
+                val value = run {
+                    val index = resources.getStringArray(R.array.minimize_on_exit_action_key).indexOfFirst {
+                        it == newValue
+                    }
+                    if (index != -1) {
+                        resources.getStringArray(R.array.minimize_on_exit_action_description)[index]
+                    } else {
+                        null
+                    }
+                }
+                binding?.minimizeOnExitSubTextView?.text = String.format(
+                    getString(R.string.minimize_on_exit_summary),
+                    value
+                )
             }
-            if (index != -1) {
-                resources.getStringArray(R.array.minimize_on_exit_action_description)[index]
-            } else {
-                null
+            getString(R.string.itube_play_mode_key) -> {
+                val value = run {
+                    val index = resources.getStringArray(R.array.itube_play_mode_action_key).indexOfFirst {
+                        it == newValue
+                    }
+                    if (index != -1) {
+                        resources.getStringArray(R.array.itube_play_mode_action_description)[index]
+                    } else {
+                        null
+                    }
+                }
+                binding?.playModeDetailTextView?.text = value
             }
         }
-        binding?.minimizeOnExitSubTextView?.text = String.format(
-            getString(R.string.minimize_on_exit_summary),
-            value
-        )
     }
 
-    override fun <T : Preference?> findPreference(key: CharSequence): T? {
-        val listPreference = ListPreference(requireContext())
-        listPreference.key = key.toString()
-        listPreference.title = getString(R.string.minimize_on_exit_title)
-        listPreference.summary = getString(R.string.minimize_on_exit_summary)
-        listPreference.value = sharedPreferences.getString(getString(R.string.minimize_on_exit_key), getString(R.string.minimize_on_exit_value))
-        listPreference.entries = resources.getStringArray(R.array.minimize_on_exit_action_description)
-        listPreference.entryValues = resources.getStringArray(R.array.minimize_on_exit_action_key)
-        listPreference.dialogTitle = getString(R.string.minimize_on_exit_title)
-        listPreference.setOnPreferenceChangeListener { preference, newValue ->
-            sharedPreferences.edit {
-                putString(preference.key, newValue.toString())
-            }
-            updateNewPreference(newValue.toString())
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getString(R.string.minimize_on_exit_key) == key) {
-                if (newValue != null && newValue == getString(R.string.minimize_on_exit_popup_key) && !Settings.canDrawOverlays(context)) {
-                    Snackbar.make(
-                        requireView(), R.string.permission_display_over_apps,
-                        Snackbar.LENGTH_LONG
-                    )
-                        .setAction(R.string.settings) { PermissionHelper.checkSystemAlertWindowPermission(context) }
-                        .show()
+    private val preferences = mutableListOf<Preference>()
+    private fun initPreferences() {
+        preferences.clear()
+        run {
+            val listPreference = ListPreference(requireContext())
+            val key = getString(R.string.minimize_on_exit_key)
+            listPreference.key = key
+            listPreference.title = getString(R.string.minimize_on_exit_title)
+            listPreference.summary = getString(R.string.minimize_on_exit_summary)
+            listPreference.value = sharedPreferences.getString(getString(R.string.minimize_on_exit_key), getString(R.string.minimize_on_exit_value))
+            listPreference.entries = resources.getStringArray(R.array.minimize_on_exit_action_description)
+            listPreference.entryValues = resources.getStringArray(R.array.minimize_on_exit_action_key)
+            listPreference.dialogTitle = getString(R.string.minimize_on_exit_title)
+            listPreference.negativeButtonText = getString(R.string.close)
+            listPreference.setOnPreferenceChangeListener { preference, newValue ->
+                sharedPreferences.edit {
+                    putString(preference.key, newValue.toString())
                 }
+                updateNewPreference(key, newValue.toString())
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getString(R.string.minimize_on_exit_key) == key) {
+                    if (newValue != null && newValue == getString(R.string.minimize_on_exit_popup_key) && !Settings.canDrawOverlays(context)) {
+                        Snackbar.make(
+                            requireView(), R.string.permission_display_over_apps,
+                            Snackbar.LENGTH_LONG
+                        )
+                            .setAction(R.string.settings) { PermissionHelper.checkSystemAlertWindowPermission(context) }
+                            .show()
+                    }
+                }
+                true
             }
-            true
+            preferences.add(listPreference)
         }
-        return listPreference as? T
+
+        run {
+            val listPreference = ListPreference(requireContext())
+            val key = getString(R.string.itube_play_mode_key)
+            listPreference.key = key
+            listPreference.title = getString(R.string.itube_play_mode_title)
+            listPreference.summary = getString(R.string.itube_play_mode_description_windowing)
+            listPreference.value = sharedPreferences.getString(getString(R.string.itube_play_mode_key), getString(R.string.itube_play_mode_value))
+            listPreference.entries = resources.getStringArray(R.array.itube_play_mode_action_description)
+            listPreference.entryValues = resources.getStringArray(R.array.itube_play_mode_action_key)
+            listPreference.dialogTitle = getString(R.string.itube_play_mode_title)
+            listPreference.negativeButtonText = getString(R.string.close)
+            listPreference.setOnPreferenceChangeListener { preference, newValue ->
+                sharedPreferences.edit {
+                    putString(preference.key, newValue.toString())
+                }
+                updateNewPreference(key, newValue.toString())
+                true
+            }
+            preferences.add(listPreference)
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : Preference?> findPreference(key: CharSequence): T? {
+        return preferences.firstOrNull { key == it.key } as? T
     }
 }
