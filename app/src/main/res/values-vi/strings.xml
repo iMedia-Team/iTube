@@ -809,7 +809,7 @@
     <string name="auto_update_check_description">iTube có thể tự động kiểm tra các phiên bản mới theo thời gian và thông báo cho bạn khi chúng có sẵn.
 \nBạn có muốn kích hoạt tính năng này không?</string>
     <string name="yes">Có</string>
-    <string name="import_settings_vulnerable_format">Cài đặt trong xuất đang được nhập sử dụng định dạng dễ bị tấn công và không được dùng nữa kể từ NewPipe 0.27.0. Đảm bảo rằng bản xuất đang được nhập là từ một nguồn đáng tin cậy và chỉ ưu tiên sử dụng các bản xuất lấy từ NewPipe 0.27.0 hoặc mới hơn trong tương lai. Hỗ trợ nhập cài đặt ở định dạng dễ bị tấn công này sẽ sớm bị xóa hoàn toàn và khi đó các phiên bản cũ của NewPipe sẽ không thể nhập cài đặt xuất từ phiên bản mới nữa.</string>
+    <string name="import_settings_vulnerable_format">Cài đặt trong xuất đang được nhập sử dụng định dạng dễ bị tấn công và không được dùng nữa kể từ iTube 0.27.0. Đảm bảo rằng bản xuất đang được nhập là từ một nguồn đáng tin cậy và chỉ ưu tiên sử dụng các bản xuất lấy từ iTube 0.27.0 hoặc mới hơn trong tương lai. Hỗ trợ nhập cài đặt ở định dạng dễ bị tấn công này sẽ sớm bị xóa hoàn toàn và khi đó các phiên bản cũ của iTube sẽ không thể nhập cài đặt xuất từ phiên bản mới nữa.</string>
     <string name="version">Phiên bản %s</string>
     <string name="itube_video_mode">Chế độ xem</string>
     <string name="itube_app_info">Thông tin ứng dụng</string>
