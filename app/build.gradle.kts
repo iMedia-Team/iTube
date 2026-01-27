@@ -37,15 +37,14 @@ android {
     namespace = "org.schabi.newpipe"
 
     defaultConfig {
-        applicationId = "org.schabi.newpipe"
-        resValue("string", "app_name", "NewPipe")
+        applicationId = "com.kt.apps.video"
+        resValue("string", "app_name", "iTube")
         minSdk = 21
         targetSdk = 35
 
-        versionCode = System.getProperty("versionCodeOverride")?.toInt() ?: 1007
+        versionCode = 24080101
 
-        versionName = "0.28.2"
-        System.getProperty("versionNameSuffix")?.let { versionNameSuffix = it }
+        versionName = "24.08.01.01"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
