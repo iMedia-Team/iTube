@@ -43,9 +43,9 @@ android {
         minSdk = 21
         targetSdk = 35
 
-        versionCode = 24080101
+        versionCode = 26010101
 
-        versionName = "24.08.01.01"
+        versionName = "26.01.01.01"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -87,8 +87,14 @@ android {
         abortOnError = false
         // suppress false warning ("Resource IDs will be non-final in Android Gradle Plugin version
         // 5.0, avoid using them in switch case statements"), which affects only library projects
-        disable "NonConstantResourceId", "TimberArgCount",  "TimberArgTypes", "TimberTagLength", "BinaryOperationInTimber",
-                "LogNotTimber", "StringFormatInTimber", "ThrowableNotAtBeginning"
+        disable += "NonConstantResourceId"
+        disable += "TimberArgCount"
+        disable += "TimberArgTypes"
+        disable += "TimberTagLength"
+        disable += "BinaryOperationInTimber"
+        disable += "LogNotTimber"
+        disable += "StringFormatInTimber"
+        disable += "ThrowableNotAtBeginning"
     }
 
     compileOptions {

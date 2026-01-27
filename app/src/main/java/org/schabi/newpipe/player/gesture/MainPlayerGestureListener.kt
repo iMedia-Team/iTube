@@ -170,7 +170,16 @@ class MainPlayerGestureListener(
         distanceX: Float,
         distanceY: Float
     ): Boolean {
+//        return implementScroll(initialEvent, movingEvent, distanceX, distanceY)
         return false
+    }
+
+    private fun implementScroll(
+        initialEvent: MotionEvent?,
+        movingEvent: MotionEvent,
+        distanceX: Float,
+        distanceY: Float
+    ): Boolean {
         if (initialEvent == null || !playerUi.isFullscreen) {
             return false
         }

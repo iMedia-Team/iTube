@@ -50,7 +50,9 @@ class CommonRepositoryImpl(
                             action = newVersionInfo.unsupportedVersionAction,
                             apkFile = downloadResult.file
                         )
-                    } else null
+                    } else {
+                        null
+                    }
                 }
 
                 currentVersionCode < newVersionInfo.newestVersionCode && hiddenNewVersionHint < newVersionInfo.newestVersionCode -> {
@@ -66,7 +68,9 @@ class CommonRepositoryImpl(
                             apkFile = downloadResult.file,
                             newVersionCode = newVersionInfo.newestVersionCode
                         )
-                    } else null
+                    } else {
+                        null
+                    }
                 }
 
                 else -> {
