@@ -11,6 +11,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.preference.PreferenceManager;
 
 import com.jakewharton.processphoenix.ProcessPhoenix;
+import com.kt.apps.video.ITubeIntegration;
 
 import org.acra.ACRA;
 import org.acra.config.CoreConfigurationBuilder;
@@ -67,6 +68,7 @@ public class App extends Application {
     private boolean isFirstRun = false;
     private boolean notificationsRequested = false;
 
+    private final ITubeIntegration iTubeIntegration = ITubeIntegration.getInstance();
     private static App app;
 
     @NonNull
@@ -80,6 +82,11 @@ public class App extends Application {
 
     public void setNotificationsRequested() {
         notificationsRequested = true;
+    }
+
+    @NonNull
+    public ITubeIntegration getITubeIntegration() {
+        return iTubeIntegration;
     }
 
     @Override
@@ -132,6 +139,7 @@ public class App extends Application {
         configureRxJavaErrorHandler();
 
         YoutubeStreamExtractor.setPoTokenProvider(PoTokenProviderImpl.INSTANCE);
+        iTubeIntegration.init(this);
     }
 
     @Override

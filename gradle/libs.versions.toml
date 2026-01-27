@@ -63,6 +63,7 @@ teamnewpipe-newpipe-extractor = "v0.25.1"
 viewpager2 = "1.1.0"
 webkit = "1.14.0" # Newer versions require minSdk >= 23
 work = "2.10.5"  # Newer versions require minSdk >= 23
+gms = "4.4.2"
 
 [libraries]
 acra-core = { module = "ch.acra:acra-core", version.ref = "acra" }
@@ -129,6 +130,12 @@ squareup-leakcanary-watcher = { module = "com.squareup.leakcanary:leakcanary-obj
 squareup-okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 squareup-picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
 zacsweers-autoservice-compiler = { module = "dev.zacsweers.autoservice:auto-service-ksp", version.ref = "autoservice-zacsweers" }
+itube-firebase-bom = { module = "com.google.firebase:firebase-bom", version = "33.1.2" }
+itube-firebase-config = { module = "com.google.firebase:firebase-config-ktx" }
+itube-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+itube-datastore = { module = "androidx.datastore:datastore-preferences", version = "1.1.1" }
+itube-player = { module = "ai.zalo.kiki.youtubeplayer:core", version = "12.2.0-SNAPSHOT" }
+itube-timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -136,4 +143,5 @@ google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" } # Needed for statesaver
 jetbrains-kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+google-services = { id = "com.google.gms:google-services", version.ref = "gms" }
 sonarqube = { id = "org.sonarqube", version.ref = "sonarqube" }

@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.google.ksp)
     alias(libs.plugins.jetbrains.kotlin.parcelize)
     alias(libs.plugins.sonarqube)
+    alias(libs.plugins.google.services)
     checkstyle
 }
 
@@ -62,18 +63,16 @@ android {
 
             if (normalizedWorkingBranch.isEmpty() || workingBranch in defaultBranches) {
                 // default values when branch name could not be determined or is master or dev
-                applicationIdSuffix = ".debug"
-                resValue("string", "app_name", "NewPipe Debug")
+                resValue("string", "app_name", "iTube")
             } else {
-                applicationIdSuffix = ".debug.$normalizedWorkingBranch"
-                resValue("string", "app_name", "NewPipe $workingBranch")
+                resValue("string", "app_name", "iTube")
             }
         }
 
         release {
             System.getProperty("packageSuffix")?.let { suffix ->
                 applicationIdSuffix = suffix
-                resValue("string", "app_name", "NewPipe $suffix")
+                resValue("string", "app_name", "iTube $suffix")
             }
             isMinifyEnabled = true
             isShrinkResources = false // disabled to fix F-Droid"s reproducible build
@@ -88,7 +87,8 @@ android {
         abortOnError = false
         // suppress false warning ("Resource IDs will be non-final in Android Gradle Plugin version
         // 5.0, avoid using them in switch case statements"), which affects only library projects
-        disable += "NonConstantResourceId"
+        disable "NonConstantResourceId", "TimberArgCount",  "TimberArgTypes", "TimberTagLength", "BinaryOperationInTimber",
+                "LogNotTimber", "StringFormatInTimber", "ThrowableNotAtBeginning"
     }
 
     compileOptions {
@@ -154,6 +154,8 @@ tasks.register<Checkstyle>("runCheckstyle") {
     exclude("**/R.java")
     exclude("**/BuildConfig.java")
     exclude("main/java/us/shandian/giga/**")
+    exclude("main/java/com/kt/apps/video/data/api/DownloadService.kt")
+    exclude("main/java/com/kt/apps/video/utils/HashUtils.java")
 
     classpath = configurations.getByName("checkstyle")
 
@@ -199,15 +201,14 @@ afterEvaluate {
     }
 }
 
-sonar {
-    properties {
-        property("sonar.projectKey", "TeamNewPipe_NewPipe")
-        property("sonar.organization", "teamnewpipe")
-        property("sonar.host.url", "https://sonarcloud.io")
-    }
-}
-
 dependencies {
+    /* iTube */
+    implementation(platform(libs.itube.firebase.bom))
+    implementation(libs.itube.firebase.config)
+    implementation(libs.itube.firebase.analytics)
+    implementation(libs.itube.datastore)
+    implementation(libs.itube.player)
+    implementation(libs.itube.timber)
     /** Desugaring **/
     coreLibraryDesugaring(libs.android.desugar)
 
