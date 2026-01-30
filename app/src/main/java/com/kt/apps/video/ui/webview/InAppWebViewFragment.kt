@@ -296,11 +296,11 @@ class InAppWebViewFragment : Fragment() {
     // Helper to hide Status Bar/Navigation Bar
     private fun hideSystemUI() {
         val activity = activity ?: return
-        WindowCompat.getInsetsController(activity.window, binding.root).hide(WindowInsetsCompat.Type.navigationBars())
+        WindowCompat.getInsetsController(activity.window, binding.root).hide(WindowInsetsCompat.Type.systemBars())
     }
 
     private fun showSystemUI() {
         val activity = activity ?: return
-        WindowCompat.getInsetsController(activity.window, binding.root).show(WindowInsetsCompat.Type.navigationBars())
+        WindowCompat.getInsetsController(activity.window, binding.root).show(WindowInsetsCompat.Type.systemBars())
     }
 }
