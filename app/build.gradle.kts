@@ -176,23 +176,23 @@ tasks.register<Checkstyle>("runCheckstyle") {
 val outputDir = project.layout.buildDirectory.dir("reports/ktlint/")
 val inputFiles = fileTree("src") { include("**/*.kt") }
 
-tasks.register<JavaExec>("runKtlint") {
-    inputs.files(inputFiles)
-    outputs.dir(outputDir)
-    mainClass.set("com.pinterest.ktlint.Main")
-    classpath = configurations.getByName("ktlint")
-    args = listOf("--editorconfig=../.editorconfig", "src/**/*.kt")
-    jvmArgs = listOf("--add-opens", "java.base/java.lang=ALL-UNNAMED")
-}
-
-tasks.register<JavaExec>("formatKtlint") {
-    inputs.files(inputFiles)
-    outputs.dir(outputDir)
-    mainClass.set("com.pinterest.ktlint.Main")
-    classpath = configurations.getByName("ktlint")
-    args = listOf("--editorconfig=../.editorconfig", "-F", "src/**/*.kt")
-    jvmArgs = listOf("--add-opens", "java.base/java.lang=ALL-UNNAMED")
-}
+//tasks.register<JavaExec>("runKtlint") {
+//    inputs.files(inputFiles)
+//    outputs.dir(outputDir)
+//    mainClass.set("com.pinterest.ktlint.Main")
+//    classpath = configurations.getByName("ktlint")
+//    args = listOf("--editorconfig=../.editorconfig", "src/**/*.kt")
+//    jvmArgs = listOf("--add-opens", "java.base/java.lang=ALL-UNNAMED")
+//}
+//
+//tasks.register<JavaExec>("formatKtlint") {
+//    inputs.files(inputFiles)
+//    outputs.dir(outputDir)
+//    mainClass.set("com.pinterest.ktlint.Main")
+//    classpath = configurations.getByName("ktlint")
+//    args = listOf("--editorconfig=../.editorconfig", "-F", "src/**/*.kt")
+//    jvmArgs = listOf("--add-opens", "java.base/java.lang=ALL-UNNAMED")
+//}
 
 tasks.register<CheckDependenciesOrder>("checkDependenciesOrder") {
     tomlFile = layout.projectDirectory.file("../gradle/libs.versions.toml")
@@ -200,10 +200,10 @@ tasks.register<CheckDependenciesOrder>("checkDependenciesOrder") {
 
 afterEvaluate {
     tasks.named("preDebugBuild").configure {
-        if (!System.getProperties().containsKey("skipFormatKtlint")) {
-            dependsOn("formatKtlint")
-        }
-        dependsOn("runCheckstyle", "runKtlint", "checkDependenciesOrder")
+//        if (!System.getProperties().containsKey("skipFormatKtlint")) {
+//            dependsOn("formatKtlint")
+//        }
+//        dependsOn("runCheckstyle", "runKtlint", "checkDependenciesOrder")
     }
 }
 

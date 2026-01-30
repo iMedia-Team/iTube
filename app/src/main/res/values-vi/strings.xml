@@ -834,7 +834,6 @@
     <string name="account_terminated_service_provides_reason">Tài khoản bị vô hiệu hóa. \n\n%1$s cung cấp lý do này: %2$s</string>
     <string name="entry_deleted">Entry đã xóa</string>
     <string name="player_http_invalid_status">Đã xảy ra lỗi HTTP %1$s trong khi phát</string>
-    <string name="version">%s phiên bản %s</string>
     <string name="version">Phiên bản %s</string>
     <string name="itube_video_mode">Chế độ xem</string>
     <string name="itube_app_info">Thông tin ứng dụng</string>
