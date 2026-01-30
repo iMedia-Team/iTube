@@ -61,7 +61,8 @@ class FirebaseApiImpl(private val dataStore: DataStore<Preferences>) : FirebaseA
         Timber.tag("Firebase").d("newVersion: %s", newVersion)
         _data.value = FirebaseApi.Data(
             iTubeNewVersion = newVersion,
-            iTubePlayerChooser = remoteConfig.getString("iTubePlayerChooser")
+            iTubePlayerChooser = remoteConfig.getString("iTubePlayerChooser"),
+            youtubeWebViewData = remoteConfig.getString("youtubeWebViewData")
         )
     }
 }

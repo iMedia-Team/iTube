@@ -1,19 +1,23 @@
 package com.kt.apps.video.domain.repository
 
+import ai.zalo.kiki.auto.specific.app_handle.webview.InAppWebData
 import com.kt.apps.video.data.PlayerType
 import com.kt.apps.video.data.source.ConfigurationDataSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.shareIn
 import org.schabi.newpipe.BuildConfig
 import timber.log.Timber
+import kotlin.coroutines.CoroutineContext
 
 class BlockRepositoryImpl(
     configurationDataSource: ConfigurationDataSource
-) : BlockRepository {
+) : BlockRepository, CoroutineScope {
+    override val coroutineContext: CoroutineContext by lazy { Dispatchers.Default }
     private val _selectVideoDetailPlayer = configurationDataSource.playerChooser.map { it ->
         // Đi từ cuối tới đầu, lấy giá trị có version bé hơn hoặc bằng current
         // BuildConfig.VERSION_CODE = 5
@@ -24,6 +28,7 @@ class BlockRepositoryImpl(
         it.versionPlayers.lastOrNull {
             BuildConfig.VERSION_CODE >= it.version
         }?.playerType ?: PlayerType.Origin
-    }.map { it == PlayerType.Origin }.stateIn(CoroutineScope(Dispatchers.Default), SharingStarted.Eagerly, true)
-    override val pickedVideoDetailPlayer: StateFlow<Boolean> = _selectVideoDetailPlayer
+    }.shareIn(this, SharingStarted.Eagerly, 1)
+    override val pickedVideoDetailPlayer: Flow<PlayerType> = _selectVideoDetailPlayer
+    override val youtubeWebData: Flow<InAppWebData> = configurationDataSource.youtubeWebData.shareIn(this, SharingStarted.Lazily, 1)
 }

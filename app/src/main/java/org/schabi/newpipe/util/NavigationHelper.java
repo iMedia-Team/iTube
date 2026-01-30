@@ -433,8 +433,11 @@ public final class NavigationHelper {
     public static void openVideoDetailFragment(@NonNull final Context context,
                                                @NonNull final FragmentManager fragmentManager,
                                                @NonNull final OpenVideoDetailData data) {
-        final boolean isOriginPlayer = ITubeIntegration.getInstance().getCommonRepository()
+        final com.kt.apps.video.data.PlayerType playerType =
+                ITubeIntegration.getInstance().getCommonRepository()
                 .selectVideoDetailPlayer();
+        final boolean isOriginPlayer =
+                playerType == com.kt.apps.video.data.PlayerType.Origin.INSTANCE;
         ITubeUtils.logOnOpenVideoDetail(data, isOriginPlayer);
         if (isOriginPlayer) {
             openVideoDetailOnOriginPlayer(
@@ -442,7 +445,8 @@ public final class NavigationHelper {
                     fragmentManager,
                     data);
         } else if (data.getUrl() != null) {
-            openVideoDetailOnWebPlayer(context, data.getUrl());
+            openVideoDetailOnWebPlayer(context, data.getUrl(),
+                    playerType == com.kt.apps.video.data.PlayerType.Web.INSTANCE);
         } else {
             Toast.makeText(context, "No url found", Toast.LENGTH_SHORT).show();
         }
@@ -450,9 +454,11 @@ public final class NavigationHelper {
 
     public static void openVideoDetailOnWebPlayer(
             @NonNull final Context context,
-            @NonNull final String url
+            @NonNull final String url,
+            final boolean isWebPlayer
             ) {
         final Intent intent = new Intent(context, WebPlayerActivity.class);
+        intent.putExtra("isWebPlayer", isWebPlayer);
         intent.setData(Uri.parse(url));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);

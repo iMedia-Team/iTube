@@ -1,10 +1,12 @@
 package com.kt.apps.video.domain.repository
 
+import ai.zalo.kiki.auto.specific.app_handle.webview.InAppWebData
 import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
+import com.kt.apps.video.data.PlayerType
 import com.kt.apps.video.data.api.download.DownloadApi
 import com.kt.apps.video.data.source.ConfigurationDataSource
 import com.kt.apps.video.domain.CheckNewVersion
@@ -19,6 +21,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.schabi.newpipe.BuildConfig
 
 class CommonRepositoryImpl(
@@ -96,9 +99,11 @@ class CommonRepositoryImpl(
         }
     }
 
-    override fun selectVideoDetailPlayer(): Boolean {
-        val isOrigin = blockRepository.pickedVideoDetailPlayer.value
-        hideVideoDetail(!isOrigin)
-        return isOrigin
+    override fun selectVideoDetailPlayer(): PlayerType {
+        val playerType = runBlocking { blockRepository.pickedVideoDetailPlayer.first() }
+        hideVideoDetail(playerType != PlayerType.Origin)
+        return playerType
     }
+
+    override val youtubeWebData: Flow<InAppWebData> = blockRepository.youtubeWebData
 }

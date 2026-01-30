@@ -5,6 +5,7 @@ import org.schabi.newpipe.player.playqueue.PlayQueue
 sealed interface PlayerType {
     data object Origin : PlayerType
     data object Web : PlayerType
+    data object WebView : PlayerType
 }
 data class VersionedPlayer(val playerType: PlayerType, val version: Long)
 data class PlayerChooser(val versionPlayers: List<VersionedPlayer> = listOf())
